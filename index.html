@@ -22,7 +22,7 @@
    PICTURE: the savings growth curve; first as a teaser with a hidden number at 65, then yours, plus a note from your future self
    COLOUR and TYPE: deep green walls, rosa mexicano for action and for money back; Fraunces for headlines and numbers, Inter for text
    LAYOUT: one card per step with sharp edges; result = number, three colour blocks, letter, staircase, slider, WhatsApp */
-:root{color-scheme:light dark;--g:#00463c;--g2:#0a5a4d;--lime:#f8cfe0;--coral:#e4007c;--wall:#f7b7d2;--serif:Fraunces,Georgia,serif;
+:root{color-scheme:light dark;--g:#00463c;--g2:#0a5a4d;--lime:#f8cfe0;--coral:#e4007c;--wall:#f7b7d2;--serif:Fraunces,Georgia,serif;--paid:light-dark(#00463c,#3f9a7b);
 --bg:light-dark(#ffffff,#071c18);--card:light-dark(#ffffff,#0e2b25);--ink:light-dark(#0d1f1b,#eaf3ee);
 --mute:light-dark(#4d615c,#a9bdb6);--line:light-dark(#dbe5e1,#24443d);--soft:light-dark(#fbeef3,#2a1621);--acc:light-dark(#c2006a,#ff8cc6)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
@@ -222,7 +222,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
   <div class="letter" id="letter"></div>
   </div>
   <div class="grp">
-  <div class="legend"><span><i style="background:var(--wall)"></i>Lo que creció tu dinero</span><span><i style="background:var(--g2)"></i>Lo que tú pusiste</span></div>
+  <div class="legend"><span><i style="background:var(--wall)"></i>Lo que creció tu dinero</span><span><i style="background:var(--paid)"></i>Lo que tú pusiste</span></div>
   <div class="fig" id="fig"><svg id="chart" role="img" aria-label="Cómo crece tu ahorro por edad"></svg><div class="tip" id="tip"></div></div>
   </div>
   <div class="slider">
@@ -377,7 +377,7 @@ function plot(s,p,opt={}){
  ${gy.map(v=>`<line x1="${L}" x2="${W-Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="var(--mute)">${short(v)}</text>`).join('')}
  ${ax.map(a=>`<text x="${X(a)}" y="${H-6}" text-anchor="middle" font-size="12" fill="var(--mute)">${a}${narrow?'':' años'}</text>`).join('')}
  <defs><linearGradient id="gw${opt.hide?1:2}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7b7d2"/><stop offset="1" stop-color="#f7b7d2" stop-opacity=".45"/></linearGradient></defs><path d="${path('fund')}${close}" fill="url(#gw${opt.hide?1:2})"/><path class="ln" d="${path('fund')}" fill="none" stroke="var(--coral)" stroke-width="3" stroke-linejoin="round"/>
- <path d="${path('paid')}${close}" fill="var(--g)"/>
+ <path d="${path('paid')}${close}" fill="var(--paid)"/>
  <circle cx="${X(end.age)}" cy="${Y(end.fund)}" r="7" fill="var(--coral)" stroke="var(--card)" stroke-width="3"/>`;
  if(opt.hide)h+=`<g transform="translate(${Math.min(W-62,X(end.age)-28)},${Math.max(4,Y(end.fund)-58)})"><rect width="88" height="42" rx="10" fill="var(--coral)"/><text x="44" y="18" text-anchor="middle" font-size="12" fill="#ffe3f1">A los 65</text><text x="44" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Fraunces,serif">$ $ $ ?</text></g>
   <text x="${L+4}" y="${Tp+4}" font-size="13" fill="var(--mute)">Ejemplo ilustrativo</text>`;
@@ -457,7 +457,7 @@ function render(reveal){
  const months=Math.round(res.fund/st.sal),perPeso=t.ref/(12*st.C);
  const yr=new Date().getFullYear()+(st.ret-st.age),nm=lead.name?lead.name+', ':'';
  $('letter').innerHTML=`<h3>Un mensaje de tu yo de ${st.ret}</h3>
-  <p>${nm}gracias por pensar en mí. Si empezamos hoy con <b>${fmt(st.C)} al mes</b>, a los ${st.ret} tendremos unos <b>${words(res.fund)}</b>: como <b>${fmt(res.income)} al mes</b> para vivir tranquilos.</p>
+  <p>${nm?nm+'gracias':'Gracias'} por pensar en mí. Si empezamos hoy con <b>${fmt(st.C)} al mes</b>, a los ${st.ret} tendremos unos <b>${words(res.fund)}</b>: como <b>${fmt(res.income)} al mes</b> para vivir tranquilos.</p>
   <p>Y mientras tanto, el SAT te regresa <b>${fmt(t.ref)}</b> cada año. Lo único que te pido: no lo dejes para después.</p>
   <p class="sig">Tú, en ${yr}</p>`;
  $('rCompare').innerHTML=`Eso es como <b>${months} meses de tu sueldo actual</b>. Y por cada $100 que ahorras, <b>el SAT te devuelve $${Math.round(perPeso*100)}</b>.`;
@@ -486,7 +486,8 @@ $('waBtnTxt').textContent=`Escribirle a ${first} por WhatsApp`;$('waBtn2').textC
 $('privacy').href=CONFIG.privacyUrl;
 if(lead.name){$('hello').textContent=`${lead.name}, tu yo de 65 años te quiere decir algo.`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
 
-const waText=()=>{const r=res;if(!r)return `Hola ${adv.name.split(' ')[0]}, soy ${lead.name||'[tu nombre]'}. Tengo una pregunta sobre el plan de retiro.${lead.id?'\nRef: '+lead.id:''}`;return `Hola ${adv.name.split(' ')[0]}, soy ${lead.name||'[tu nombre]'}. Hice mi cálculo de retiro:
+const hi=()=>`Hola ${adv.name.split(' ')[0]}${lead.name?', soy '+lead.name:''}.`;
+const waText=()=>{const r=res;if(!r)return `${hi()} Tengo una pregunta sobre el plan de retiro.${lead.id?'\nRef: '+lead.id:''}`;return `${hi()} Hice mi cálculo de retiro:
 • Ahorro: ${fmt(st.C)} al mes desde los ${st.age} años
 • A los ${st.ret}: ${words(r.fund)} (pesos de hoy)
 • Devolución del SAT: ${fmt(r.tax.ref)} al año
