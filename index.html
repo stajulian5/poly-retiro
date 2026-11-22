@@ -8,7 +8,7 @@
 <meta property="og:url" content="https://stajulian5.github.io/poly-retiro/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Poly.la">
-<meta property="og:title" content="¿Qué te diría tu yo de 65?">
+<meta property="og:title" content="Hazle un favor a tu yo de 65.">
 <meta property="og:description" content="Descubre en 1 minuto cuánto tendrás a los 65 y cuánto te devuelve el SAT. Tu fortuna no es suerte, es plan.">
 <meta property="og:image" content="https://stajulian5.github.io/poly-retiro/og.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -142,10 +142,10 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 
  <!-- 0 · Teaser -->
  <section class="step on" data-s="0">
-  <h1 id="hello">Tu yo de 65 años te quiere decir algo.</h1>
-  <p class="hint" id="helloSub">Contesta 4 preguntas y descubre cuánto tendrás a los 65, cuánto te devuelve el SAT y cómo crece tu ahorro año con año.</p>
+  <h1 id="hello">Hazle un favor a tu yo de 65.</h1>
+  <p class="hint" id="helloSub">4 preguntas, 1 minuto. Te mostramos cuánto tendrás a los 65 y cuánto te regresa el SAT cada año.</p>
   <div class="fig"><svg id="teaser" role="img" aria-label="Ejemplo de cómo crece un ahorro para el retiro"></svg></div>
-  <button class="cta" data-go="1">Escuchar a mi yo de 65</button>
+  <button class="cta" data-go="1">Hacerle el favor</button>
   <p class="hint" style="text-align:center;margin-top:-8px">1 minuto · Sin datos bancarios · Sin compromiso</p>
   <div class="trust"><span><b>Allianz México</b>Plan respaldado por</span><span><b>Deducible</b>ante el SAT</span><span><b>Agente autorizado</b>por la CNSF</span></div>
  </section>
@@ -532,7 +532,7 @@ $('advName').textContent=adv.name;$('advRole').textContent=adv.role;$('advCed').
 $('avatar').innerHTML=adv.photo?`<img src="${encodeURI(adv.photo)}" alt="${adv.name}">`:ini;
 $('waBtnTxt').textContent=`Escribirle a ${first} por WhatsApp`;$('waBtn2').textContent=`Escribirle a ${first} por WhatsApp`;
 $('privacy').href=CONFIG.privacyUrl;
-if(lead.name){$('hello').textContent=`${lead.name}, tu yo de 65 años te quiere decir algo.`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
+if(lead.name){$('hello').textContent=`${lead.name}, hazle un favor a tu yo de 65.`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
 
 const hi=()=>`Hola ${adv.name.split(' ')[0]}${lead.name?', soy '+lead.name:''}.`;
 const waText=()=>{const r=res;if(!r)return `${hi()} Tengo una pregunta sobre el plan de retiro.${lead.id?'\nRef: '+lead.id:''}`;return `${hi()} Hice mi cálculo de retiro:
