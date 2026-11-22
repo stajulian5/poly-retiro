@@ -443,7 +443,7 @@ const tax=C=>{const A=st.sal*12,cap=Math.min(.1*A,UMA5),ded=Math.min(12*C,cap);r
 /* gráfica: s=svg, pts, opciones {hide:true} para la vista previa */
 function plot(s,p,opt={}){
  const W=s.clientWidth,H=s.clientHeight;if(!W)return;
- const narrow=W<480,L=opt.hide?8:(narrow?46:58),Rr=opt.hide?70:14,Tp=16,B=26;
+ const narrow=W<480,L=opt.hide?8:(narrow?46:58),Rr=opt.hide?12:14,Tp=16,B=26;
  const maxY=Math.max(...p.map(d=>Math.max(d.fund,d.paid)),1)*1.1,x0=p[0].age,x1=p[p.length-1].age;
  const X=a=>L+(a-x0)/(x1-x0)*(W-L-Rr),Y=v=>Tp+(1-Math.max(0,v)/maxY)*(H-Tp-B);
  const path=k=>p.map((d,i)=>(i?'L':'M')+X(d.age).toFixed(1)+' '+Y(d[k]).toFixed(1)).join('');
@@ -452,11 +452,11 @@ function plot(s,p,opt={}){
  const step=(x1-x0)>24?10:5,ax=[];for(let a=Math.ceil(x0/step)*step;a<=x1;a+=step)ax.push(a);
  let h=`<line x1="${L}" x2="${W-Rr}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)"/>
  ${gy.map(v=>`<line x1="${L}" x2="${W-Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="var(--mute)">${short(v)}</text>`).join('')}
- ${ax.map(a=>`<text x="${X(a)}" y="${H-6}" text-anchor="middle" font-size="12" fill="var(--mute)">${a}${narrow?'':' años'}</text>`).join('')}
+ ${ax.map(a=>`<text x="${X(a)}" y="${H-6}" text-anchor="${opt.hide&&a===x0?'start':'middle'}" font-size="12" fill="var(--mute)">${a}${narrow?'':' años'}</text>`).join('')}
  <defs><linearGradient id="gw${opt.hide?1:2}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7b7d2"/><stop offset="1" stop-color="#f7b7d2" stop-opacity=".45"/></linearGradient></defs><path d="${path('fund')}${close}" fill="url(#gw${opt.hide?1:2})"/><path class="ln" d="${path('fund')}" fill="none" stroke="var(--coral)" stroke-width="3" stroke-linejoin="round"/>
  <path d="${path('paid')}${close}" fill="var(--paid)"/>
  <circle cx="${X(end.age)}" cy="${Y(end.fund)}" r="7" fill="var(--coral)" stroke="var(--card)" stroke-width="3"/>`;
- if(opt.hide)h+=`<g transform="translate(${Math.min(W-62,X(end.age)-28)},${Math.max(4,Y(end.fund)-58)})"><rect width="88" height="42" rx="10" fill="var(--coral)"/><text x="44" y="18" text-anchor="middle" font-size="12" fill="#ffe3f1">A los 65</text><text x="44" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Fraunces,serif">$ $ $ ?</text></g>
+ if(opt.hide)h+=`<g transform="translate(${X(end.age)-104},${Math.max(2,Y(end.fund)-6)})"><rect width="88" height="42" rx="10" fill="var(--coral)"/><text x="44" y="18" text-anchor="middle" font-size="12" fill="#ffe3f1">A los 65</text><text x="44" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Fraunces,serif">$ $ $ ?</text></g>
   <text x="${L+4}" y="${Tp+4}" font-size="13" fill="var(--mute)">Ejemplo ilustrativo</text>`;
  else h+=`<line id="hx" y1="${Tp}" y2="${H-B}" stroke="var(--ink)" stroke-dasharray="3 3" opacity="0"/><rect id="hit" x="${L}" y="0" width="${W-L-Rr}" height="${H}" fill="transparent"/>`;
  s.innerHTML=h;
