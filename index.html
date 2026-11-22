@@ -78,6 +78,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 .checks{list-style:none;padding:0;margin:0;display:grid;gap:14px}
 .checks li{display:flex;gap:12px;align-items:center;font-size:18px;color:var(--mute);opacity:.35;transition:opacity .3s,color .3s}
 .checks li::before{content:"";width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex:none;transition:.3s}
+.checks li.act{opacity:1;color:var(--ink)}.checks li.act::before{border-color:var(--coral);border-top-color:transparent;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 .checks li.ok{opacity:1;color:var(--ink)}.checks li.ok::before{background:var(--coral) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12l4 4 8-8' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E") center/16px no-repeat;border-color:var(--coral)}
 .compare{color:var(--mute);font-size:15px}.compare b{color:var(--ink)}
 .letter{background:var(--wall);color:#3b0020;border-radius:4px;padding:22px 22px 18px;display:grid;gap:10px;position:relative;box-shadow:8px 8px 0 var(--g)}
@@ -450,8 +451,8 @@ const pick=(id,fn)=>$(id).addEventListener('click',e=>{const b=e.target.closest(
 const ageMsg=()=>{const y=Math.max(65,st.age+5)-st.age;$('ageMsg').textContent=y>=25?`Tienes ${y} años por delante: el tiempo es tu mejor aliado.`:y>=15?`Te quedan ${y} años: suficiente para que tu dinero se multiplique.`:`Te quedan ${y} años: buen momento para acelerar.`};
 $('age').addEventListener('input',e=>{st.age=+e.target.value;$('ageV').textContent=st.age;ageMsg()});ageMsg();
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function loading(){const li=[...$('checks').children];li.forEach(x=>x.classList.remove('ok'));
- const d=RM?150:550;li.forEach((x,i)=>setTimeout(()=>x.classList.add('ok'),d*(i+1)));setTimeout(()=>go('5'),d*li.length+450)}
+function loading(){const li=[...$('checks').children];li.forEach(x=>x.classList.remove('ok','act'));
+ const d=RM?300:1150;li.forEach((x,i)=>{setTimeout(()=>x.classList.add('act'),d*i+150);setTimeout(()=>{x.classList.remove('act');x.classList.add('ok')},d*(i+1))});setTimeout(()=>go('5'),d*li.length+650)}
 function countUp(el,to,fn){if(RM){el.textContent=fn(to);return}const t0=performance.now(),D=1300;
  const f=t=>{const k=Math.min(1,(t-t0)/D),e=1-(1-k)**3;el.textContent=fn(to*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 function confetti(){if(RM)return;const c=$('confetti'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
