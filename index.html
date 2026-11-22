@@ -134,6 +134,20 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 .ans{padding:0 0 18px;color:var(--mute);font-size:16px;display:grid;gap:10px}.ans b{color:var(--ink)}.ans ul{margin:0;padding-left:20px;display:grid;gap:6px}
 .faqcta{border-top:1px solid var(--line);padding-top:20px;display:grid;gap:12px}
 .painting{position:relative;aspect-ratio:1200/470;margin-top:8px}@media(max-width:600px){.painting{aspect-ratio:860/470}}.painting svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.minitrust{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 8px;margin:-8px 0 0;color:var(--mute);font-size:13px}
+.minitrust span{white-space:nowrap}@media(max-width:380px){.minitrust span:nth-child(2){display:none}}.minitrust span+span::before{content:"·";margin-right:8px;color:var(--mute)}
+.trust i{font-style:normal}
+.retpick{display:grid;gap:8px;justify-items:center}.opts.three{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+.opts.three .opt{justify-content:center;font-size:18px}
+.legend span{white-space:nowrap}
+.linkbtn{background:none;border:0;color:var(--acc);font:600 15px Inter,sans-serif;cursor:pointer;padding:8px 0;min-height:44px;justify-self:center;text-decoration:underline;text-underline-offset:3px}
+.cb{display:grid;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:14px}
+.cb .lab{font-weight:600;font-size:15px}
+.cbdone{background:var(--soft);border-radius:4px;padding:14px 16px;font-size:15px}
+.share{display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;min-height:48px;color:var(--ink);font:600 16px Inter,sans-serif;text-decoration:none}
+.share:hover{border-color:var(--acc)}
+.explore{display:grid;gap:24px;border-top:1px solid var(--line);padding-top:24px}
+.exh{font:700 22px/1.2 var(--serif);margin:0}
 .fine{max-width:720px;margin:0 auto;padding:0 16px 32px;color:#cfe3da;font-size:13px}
 @media(max-width:560px){.res3{grid-template-columns:minmax(0,1fr);gap:8px}.res3 div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px}.res3 b{margin:0}.opts.two{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.step.on{animation:none}.prog i{transition:none}}
@@ -150,8 +164,8 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
   <p class="hint" id="helloSub">4 preguntas, 1 minuto. Te mostramos tu número y cuánto te regresa el SAT cada año.</p>
   <div class="fig"><svg id="teaser" role="img" aria-label="Ejemplo de cómo crece un ahorro para el retiro"></svg></div>
   <button class="cta" data-go="1">Descubrir mi número</button>
-  <p class="hint" style="text-align:center;margin-top:-8px">1 minuto · Sin datos bancarios · Sin compromiso</p>
-  <div class="trust"><span><b id="backer">Allianz México</b>Plan respaldado por</span><span><b>Deducible</b>ante el SAT</span><span><b>Agente autorizado</b>por la CNSF</span></div>
+  <p class="minitrust"><span>1 minuto</span><span>Sin datos bancarios</span><span>Sin compromiso</span></p>
+  <div class="trust"><span><b id="backer">Allianz México</b>Plan respaldado por</span><span><b>Deducible</b>ante el SAT</span><span><b>Agente autorizado</b><i id="trustCed">por la CNSF</i></span></div>
  </section>
 
  <!-- 1 · Edad -->
@@ -161,6 +175,8 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
   <div class="agebig" id="ageV">35</div>
   <input type="range" id="age" min="20" max="60" value="35" aria-label="Edad">
   <p class="hint" id="ageMsg" style="text-align:center"></p>
+  <div class="retpick"><span class="hint">Me quiero retirar a los</span>
+   <div class="opts three" id="qRet"><button class="opt" data-v="60">60</button><button class="opt" data-v="65" aria-pressed="true">65</button><button class="opt" data-v="70">70</button></div></div>
   <button class="cta" data-go="2">Siguiente</button>
   <button class="back" data-go="0">← Atrás</button>
  </section>
@@ -238,19 +254,41 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 
  <!-- 5 · Resultado + contacto -->
  <section class="step" data-s="5">
-  <div class="grp tight"><h2 id="rTitle">A los 65 tendrías $0</h2>
+  <div class="grp tight"><h2 id="rTitle">A los 65 recibirías $0 al mes</h2>
   <p class="hint" id="rSub"></p></div>
   <div class="grp">
   <div class="res3">
    <div>Ahorras al mes<b id="rC">$0</b></div>
-   <div>Equivale a recibir al mes<b id="rInc">$0</b></div>
+   <div><span id="rFundL">Tu fondo a los 65</span><b id="rFund">$0</b></div>
    <div class="tax">El SAT te regresa al año<b id="rTax">$0</b></div>
   </div>
   <p class="compare" id="rCompare"></p>
   <div class="letter" id="letter"></div>
   </div>
+  <div class="wa" id="leadBox">
+   <h2 style="font-size:26px" id="fTitle">¿Lo armamos juntos?</h2>
+   <p class="hint" id="waLead">Escríbeme por WhatsApp y te respondo con tu plan listo: resuelvo tus dudas y te digo exactamente cómo empezar. Gratis y sin compromiso.</p>
+   <div class="adv">
+    <div class="av" id="avatar"></div>
+    <div><b id="advName"></b><span id="advRole"></span><small id="advCed"></small></div>
+   </div>
+   <div class="bubble" id="waPreview"></div>
+   <a class="cta wabtn" id="waBtn" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2 5.1 5.1 0 0 0 1 2.7 11.7 11.7 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg><span id="waBtnTxt">Escribir por WhatsApp</span></a>
+   <p class="hint" style="font-size:13px;text-align:center">Al escribirnos aceptas nuestro <a id="privacy" href="#" style="color:var(--acc)">aviso de privacidad</a>.</p>
+   <button class="linkbtn" type="button" id="cbOpen">Prefiero que un asesor me escriba</button>
+   <form class="cb" id="cbForm" hidden novalidate>
+    <label for="cbTel" class="lab">Tu WhatsApp (10 dígitos)</label>
+    <div class="cin"><span>+52</span><input id="cbTel" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="55 1234 5678"><button class="cta mini" id="cbGo" type="submit">Que me escriban</button></div>
+    <label class="consent"><input id="cbOk" type="checkbox"><span>Acepto que me contacten por WhatsApp sobre este plan.</span></label>
+    <p class="warn" id="cbErr" role="alert"></p>
+   </form>
+   <div class="cbdone" id="cbDone" hidden aria-live="polite"></div>
+   <a class="share" id="shareBtn" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>Compártelo con tu pareja</a>
+  </div>
+  <div class="explore">
+  <h3 class="exh">Explora tu plan</h3>
   <div class="grp">
-  <div class="legend"><span><i style="background:var(--wall)"></i>Lo que creció tu dinero</span><span><i style="background:var(--paid)"></i>Lo que tú pusiste</span></div>
+  <div class="legend"><span><i style="background:var(--wall)"></i>Lo que creció</span><span><i style="background:var(--paid)"></i>Lo que pusiste</span></div>
   <div class="fig" id="fig"><svg id="chart" role="img" aria-label="Cómo crece tu ahorro por edad"></svg><div class="tip" id="tip"></div></div>
   </div>
   <div class="slider">
@@ -268,18 +306,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
    <summary><span>¿Cómo funciona y qué debo saber?<small>Ver detalles</small></span></summary>
    <ul id="howList"></ul>
   </details>
-
-  <div class="wa" id="leadBox">
-   <h2 style="font-size:26px" id="fTitle">¿Lo armamos juntos?</h2>
-   <p class="hint" id="waLead">Escríbeme por WhatsApp y te respondo con tu plan listo: resuelvo tus dudas y te digo exactamente cómo empezar. Gratis y sin compromiso.</p>
-   <div class="adv">
-    <div class="av" id="avatar"></div>
-    <div><b id="advName"></b><span id="advRole"></span><small id="advCed"></small></div>
-   </div>
-   <div class="bubble" id="waPreview"></div>
-   <a class="cta wabtn" id="waBtn" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2 5.1 5.1 0 0 0 1 2.7 11.7 11.7 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg><span id="waBtnTxt">Escribir por WhatsApp</span></a>
-   <p class="hint" style="font-size:13px;text-align:center">Al escribirnos aceptas nuestro <a id="privacy" href="#" style="color:var(--acc)">aviso de privacidad</a>.</p>
-   <button class="back" type="button" data-go="1">Cambiar mis respuestas</button>
+  <button class="back" type="button" data-go="1">Cambiar mis respuestas</button>
   </div>
  </section>
 
@@ -292,7 +319,9 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 <section class="faqwrap" id="faq" aria-labelledby="faqT">
  <div class="card faq">
   <h2 id="faqT">Preguntas frecuentes</h2>
-  <details><summary>¿Cómo me devuelve dinero el SAT?</summary><div class="ans"><p>Lo que aportas a este plan es <b>deducible en tu declaración anual</b> (artículo 151, fracción V de la Ley del ISR). El SAT te devuelve el impuesto que ya pagaste sobre esa parte de tu sueldo.</p><ul><li>Puedes deducir hasta el <b>10% de tus ingresos del año</b>, con un tope de 5 UMA anuales: <b>$213,973 en 2026</b>.</li><li>Este límite va aparte del tope general de deducciones, así que no compite con tus gastos médicos o colegiaturas.</li><li>Recibes tu constancia de aportaciones, presentas tu declaración en abril y el SAT te deposita la devolución.</li></ul><p>Ejemplo: si ganas $80,000 al mes y aportas el máximo deducible, $8,000 al mes, el SAT te devolvería alrededor de <b>$28,800 al año</b>: el 30% de lo que ahorras. Entre más ganas, mayor es el porcentaje que te regresa (de alrededor de 10% hasta 34%).</p></div></details><details><summary>¿Es seguro? ¿Quién cuida mi dinero?</summary><div class="ans"><p>Sí. El plan lo emite <b>Allianz México</b>, una aseguradora regulada y supervisada por la CNSF, y tu dinero está a tu nombre. Se invierte en instrumentos autorizados por la CNSF, como bonos del gobierno, y tú eliges qué tan conservador o dinámico quieres tu perfil. Poly.la es agente de seguros autorizado.</p></div></details><details><summary>¿Cómo se multiplica mi dinero?</summary><div class="ans"><p>Se juntan cuatro cosas:</p><ul><li><b>Interés compuesto:</b> lo que ganas también genera ganancias. Por eso la curva crece despacio al principio y rápido al final; el tiempo es tu mejor aliado.</li><li><b>Inversión a tu medida:</b> fondos en pesos, UDIS, dólares o euros, de conservadores a dinámicos, y opciones como oro o mercados emergentes. Puedes cambiar cuando quieras.</li><li><b>Bono de fidelidad:</b> si te comprometes 10 años o más, la aseguradora te da entre 5% y 100% de tu primer año de aportaciones.</li><li><b>Devolución del SAT:</b> cada año recuperas parte de lo que ahorras y puedes volver a invertirlo.</li></ul></div></details><details><summary>¿Qué pasa si necesito mi dinero antes?</summary><div class="ans"><p>Tu dinero es tuyo y <b>puedes disponer de él</b>: hay retiros parciales, préstamos y hasta una pausa de aportaciones si la necesitas. Cada opción tiene sus condiciones; tu asesor te explica cuál te conviene según tu caso.</p></div></details><details><summary>¿Qué pasa con mi familia si me llega a pasar algo?</summary><div class="ans"><ul><li>Si falleces, tus beneficiarios reciben <b>todo lo que llevas ahorrado</b>, sin cargo por retiro, en una sola exhibición o en pagos.</li><li>Si sufres invalidez total y permanente antes de los 65, recibes tu fondo completo.</li><li>Incluye además un seguro por muerte accidental.</li></ul></div></details><details><summary>¿Cuánto cuesta el plan?</summary><div class="ans"><p>No hay cuota de entrada. El plan tiene comisiones de administración, y <b>el simulador ya las descuenta</b>: el número que ves es después de costos. Tu asesor te da el detalle completo.</p></div></details><details><summary>¿Cuánto tengo que aportar y puedo cambiarlo?</summary><div class="ans"><p>Tú eliges una cantidad mensual que te acomode y puedes hacer <b>aportaciones extra cuando quieras</b>, por ejemplo con tu aguinaldo o tu devolución del SAT. Con el tiempo también puedes ajustarla; tu asesor te explica cómo.</p></div></details><details><summary>Ya tengo Afore, ¿para qué necesito esto?</summary><div class="ans"><p>Tu Afore es la base, pero para la mayoría de las personas la pensión que genera queda muy por debajo de su sueldo actual. Este plan es un <b>complemento</b>: suma un ingreso propio a tu pensión y, además, te da la devolución del SAT cada año.</p></div></details><details><summary>¿Pago impuestos cuando me retire?</summary><div class="ans"><p>A partir de los 65 recibes tu dinero <b>sin retención de ISR</b>, y una parte importante puede quedar exenta. Tu asesor te ayuda a planear cómo retirarlo para pagar lo menos posible.</p></div></details><details><summary>¿Cómo empiezo?</summary><div class="ans"><p>Escríbenos por WhatsApp con tu simulación. Tu asesor revisa tus números contigo, te dice qué documentos necesitas y te acompaña en la contratación. Sin costo y sin compromiso.</p></div></details>
+  <details><summary>¿Cómo me devuelve dinero el SAT?</summary><div class="ans"><p>Lo que aportas a este plan es <b>deducible en tu declaración anual</b> (artículo 151, fracción V de la Ley del ISR). El SAT te devuelve el impuesto que ya pagaste sobre esa parte de tu sueldo.</p><ul><li>Puedes deducir hasta el <b>10% de tus ingresos del año</b>, con un tope de 5 UMA anuales: <b>$213,973 en 2026</b>.</li><li>Este límite va aparte del tope general de deducciones, así que no compite con tus gastos médicos o colegiaturas.</li><li>Recibes tu constancia de aportaciones, presentas tu declaración en abril y el SAT te deposita la devolución.</li></ul><p>Ejemplo: si ganas $80,000 al mes y aportas el máximo deducible, $8,000 al mes, el SAT te devolvería alrededor de <b>$28,800 al año</b>: el 30% de lo que ahorras. Entre más ganas, mayor es el porcentaje que te regresa (de alrededor de 10% hasta 34%).</p></div></details><details><summary>¿Es seguro? ¿Quién cuida mi dinero?</summary><div class="ans"><p>Sí. El plan lo emite <b>Allianz México</b>, una aseguradora regulada y supervisada por la CNSF, y tu dinero está a tu nombre. Se invierte en instrumentos autorizados por la CNSF, como bonos del gobierno, y tú eliges qué tan conservador o dinámico quieres tu perfil. Poly.la es agente de seguros autorizado.</p></div></details><details><summary>¿Cómo se multiplica mi dinero?</summary><div class="ans"><p>Se juntan cuatro cosas:</p><ul><li><b>Interés compuesto:</b> lo que ganas también genera ganancias. Por eso la curva crece despacio al principio y rápido al final; el tiempo es tu mejor aliado.</li><li><b>Inversión a tu medida:</b> fondos en pesos, UDIS, dólares o euros, de conservadores a dinámicos, y opciones como oro o mercados emergentes. Puedes cambiar cuando quieras.</li><li><b>Bono de fidelidad:</b> si te comprometes 10 años o más, la aseguradora te da entre 5% y 100% de tu primer año de aportaciones.</li><li><b>Devolución del SAT:</b> cada año recuperas parte de lo que ahorras y puedes volver a invertirlo.</li></ul></div></details><details><summary>¿Qué pasa si necesito mi dinero antes?</summary><div class="ans"><p>Tu dinero es tuyo y <b>puedes disponer de él</b>: hay retiros parciales, préstamos y hasta una pausa de aportaciones si la necesitas. Cada opción tiene sus condiciones; tu asesor te explica cuál te conviene según tu caso.</p></div></details><div id="faqMore" hidden><details><summary>¿Qué pasa con mi familia si me llega a pasar algo?</summary><div class="ans"><ul><li>Si falleces, tus beneficiarios reciben <b>todo lo que llevas ahorrado</b>, sin cargo por retiro, en una sola exhibición o en pagos.</li><li>Si sufres invalidez total y permanente antes de los 65, recibes tu fondo completo.</li><li>Incluye además un seguro por muerte accidental.</li></ul></div></details><details><summary>¿Cuánto cuesta el plan?</summary><div class="ans"><p>No hay cuota de entrada. El plan tiene comisiones de administración, y <b>el simulador ya las descuenta</b>: el número que ves es después de costos. Tu asesor te da el detalle completo.</p></div></details><details><summary>¿Cuánto tengo que aportar y puedo cambiarlo?</summary><div class="ans"><p>Tú eliges una cantidad mensual que te acomode y puedes hacer <b>aportaciones extra cuando quieras</b>, por ejemplo con tu aguinaldo o tu devolución del SAT. Con el tiempo también puedes ajustarla; tu asesor te explica cómo.</p></div></details><details><summary>Ya tengo Afore, ¿para qué necesito esto?</summary><div class="ans"><p>Tu Afore es la base, pero para la mayoría de las personas la pensión que genera queda muy por debajo de su sueldo actual. Este plan es un <b>complemento</b>: suma un ingreso propio a tu pensión y, además, te da la devolución del SAT cada año.</p></div></details><details><summary>¿Pago impuestos cuando me retire?</summary><div class="ans"><p>A partir de los 65 recibes tu dinero <b>sin retención de ISR</b>, y una parte importante puede quedar exenta. Tu asesor te ayuda a planear cómo retirarlo para pagar lo menos posible.</p></div></details><details><summary>¿Cómo empiezo?</summary><div class="ans"><p>Escríbenos por WhatsApp con tu simulación. Tu asesor revisa tus números contigo, te dice qué documentos necesitas y te acompaña en la contratación. Sin costo y sin compromiso.</p></div></details>
+  </div>
+  <button class="linkbtn" type="button" id="faqMoreBtn">Ver más preguntas (6)</button>
   <div class="faqcta"><p><b>¿Tienes otra pregunta?</b> Escríbenos y te respondemos por WhatsApp.</p><a class="cta wabtn" id="waBtn3" href="#" target="_blank" rel="noopener">Preguntar por WhatsApp</a></div>
  </div>
 </section>
@@ -347,6 +376,9 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 /* ====== CONFIGURACIÓN: edita esto antes de publicar ====== */
 const CONFIG={
  brand:'Poly.la',
+ // PRUEBA A/B del titular y el botón: abTest:true reparte a los visitantes 50/50 (forzar con ?ab=A o ?ab=B). La variante va en cada evento y lead.
+ abTest:false,
+ ab:{A:{h:'¿Cuánto vas a tener a los 65?',cta:'Descubrir mi número'},B:{h:'¿Te va a alcanzar a los 65?',cta:'Ver cuánto tendré'}},
  backerLogo:'', // logo OFICIAL de Allianz México (archivo del portal de agentes), p. ej. 'allianz-mexico.svg' en la misma carpeta. Vacío = texto.
  // EMPRESAS CLIENTE (prueba social): REEMPLAZAR por empresas reales que ya trabajan con Poly.la y que autorizaron usar su nombre.
  // logo opcional: URL de su logo (se muestra en gris). Si la lista queda vacía, la sección se oculta.
@@ -385,7 +417,9 @@ const bonusPct=(T,annual)=>{const row=BONUS.findIndex(b=>T<b[0]),col=annual<1200
 const q=new URLSearchParams(location.search);
 const lead={id:q.get('id')||'',name:q.get('n')||'',company:q.get('e')||'',position:q.get('p')||'',logo:q.get('l')||''};
 const adv={name:q.get('a')||CONFIG.advisor.name,role:q.get('r')||(q.get('a')?'Asesor de retiro · '+CONFIG.brand:CONFIG.advisor.role),photo:q.get('f')||CONFIG.advisor.photo,wa:(q.get('w')||CONFIG.salesWhatsApp).replace(/\D/g,'')};
-const st={age:35,ret:65,sal:47500,C:2500,goal:null,r:8.5,ch:'WhatsApp',path:[]};
+const AB=(()=>{if(!CONFIG.abTest)return 'A';const f=(q.get('ab')||'').toUpperCase();if(f==='A'||f==='B')return f;
+ try{let v=localStorage.getItem('pl_ab');if(!v){v=Math.random()<.5?'A':'B';localStorage.setItem('pl_ab',v)}return v}catch(_){return Math.random()<.5?'A':'B'}})();
+const st={retPick:65,age:35,ret:65,sal:47500,C:2500,goal:null,r:8.5,ch:'WhatsApp',path:[]};
 
 function sim(C,o=st){
  const pi=CONFIG.inflation,rm=(1+o.r/100)**(1/12)-1,years=o.ret-o.age,N=years*12,T=Math.min(25,Math.max(5,years)),bp=bonusPct(T,12*C);
@@ -444,14 +478,15 @@ const drawAll=()=>{plot($('teaser'),teaserPts,{hide:true});if(res)plot($('chart'
 const ro=new ResizeObserver(drawAll);ro.observe(document.querySelector('main'));
 
 /* embudo */
-const track=(ev,extra={})=>{if(!CONFIG.trackUrl)return;try{fetch(CONFIG.trackUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({event:ev,lead_id:lead.id,ts:new Date().toISOString(),...extra})}).catch(()=>{})}catch(_){}};
+const track=(ev,extra={})=>{if(!CONFIG.trackUrl)return;try{fetch(CONFIG.trackUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({event:ev,ab:AB,lead_id:lead.id,ts:new Date().toISOString(),...extra})}).catch(()=>{})}catch(_){}};
+const stickyState={step:'0',vis:false},updSticky=()=>$('sticky').classList.toggle('on',stickyState.step==='5'&&!stickyState.vis);
 const ORDER={'0':0,'1':1,'2':2,'3':3,'3b':3,'4':4,'4b':4.5,'5':5};
 function go(s){
  document.querySelectorAll('.step').forEach(x=>x.classList.toggle('on',x.dataset.s===s));
  $('bar').style.width=(ORDER[s]/5*100)+'%';
  if(s==='4b')loading();
  if(s==='5')showResult();
- $('sticky').classList.toggle('on',s==='5');
+ stickyState.step=s;updSticky();
  $('faq').hidden=!(s==='0'||s==='5');$('clients').hidden=!(s==='0'||s==='5')||!CONFIG.partners.length;
  if(s==='0')drawAll();
  window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
@@ -460,7 +495,7 @@ function go(s){
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){if(b.dataset.go==='1'&&!st.started){st.started=1;track('quiz_start')}go(b.dataset.go)}});
 const pick=(id,fn)=>$(id).addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;
  for(const x of $(id).children)x.setAttribute('aria-pressed',x===b);fn(b.dataset.v)});
-const ageMsg=()=>{const y=Math.max(65,st.age+5)-st.age;$('ageMsg').textContent=y>=25?`Tienes ${y} años por delante: el tiempo es tu mejor aliado.`:y>=15?`Te quedan ${y} años: suficiente para que tu dinero se multiplique.`:`Te quedan ${y} años: buen momento para acelerar.`};
+const ageMsg=()=>{const y=Math.max(st.retPick,st.age+5)-st.age;$('ageMsg').textContent=y>=25?`Tienes ${y} años por delante: el tiempo es tu mejor aliado.`:y>=15?`Te quedan ${y} años: suficiente para que tu dinero se multiplique.`:`Te quedan ${y} años: buen momento para acelerar.`};
 $('age').addEventListener('input',e=>{st.age=+e.target.value;$('ageV').textContent=st.age;ageMsg()});ageMsg();
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function loading(){const li=[...$('checks').children];li.forEach(x=>x.classList.remove('ok','act'));
@@ -471,6 +506,7 @@ function confetti(){if(RM)return;const c=$('confetti'),x=c.getContext('2d');c.wi
  const cols=['#e4007c','#f8cfe0','#f7b7d2','#00463c','#ffffff'],P=[...Array(90)].map(()=>({x:c.width/2,y:c.height*.3,vx:(Math.random()-.5)*14,vy:Math.random()*-12-4,r:Math.random()*6+4,c:cols[Math.random()*5|0],a:Math.random()*6}));
  let n=0;const f=()=>{x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore()});
   if(++n<110)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)};f()}
+pick('qRet',v=>{st.retPick=+v;ageMsg()});
 pick('qSal',v=>{st.sal=+v;setTimeout(()=>go('3'),180)});
 pick('qSave',v=>{if(v==='goal'){st.goal=0;setTimeout(()=>go('3b'),180)}else{st.goal=null;st.C=+v;setTimeout(()=>go('4'),180)}});
 const custom=(inp,btn,min,max,done)=>{const i=$(inp),b=$(btn);
@@ -494,7 +530,7 @@ const HOW=[
  'Las comisiones del plan ya están descontadas en esta simulación.'
 ];
 function showResult(){
- st.ret=Math.max(65,st.age+5);
+ st.ret=Math.max(st.retPick,st.age+5);
  if(st.goal)st.C=solveC(st.goal);
  $('cR').value=Math.min(30000,st.C);render(true);
  if(!st.seen){st.seen=1;track('result_view',{monthly:st.C,profile:st.r})}
@@ -502,8 +538,9 @@ function showResult(){
 function render(reveal){
  res=sim(st.C);const t=tax(st.C);res.tax=t;
  const first=lead.name?lead.name+', a':'A';
- if(reveal){countUp($('rTitle'),res.fund,v=>`${first} los ${st.ret} tendrías ${words(v)}`);setTimeout(confetti,RM?0:1100)}
- else $('rTitle').textContent=`${first} los ${st.ret} tendrías ${words(res.fund)}`;
+ const T=v=>`${first} los ${st.ret} recibirías ${fmt(v)} al mes`;
+ if(reveal){countUp($('rTitle'),res.income,T);setTimeout(confetti,RM?0:1100)}
+ else $('rTitle').textContent=T(res.income);
  const months=Math.round(res.fund/st.sal),perPeso=t.ref/(12*st.C);
  const yr=new Date().getFullYear()+(st.ret-st.age),nm=lead.name?lead.name+', ':'';
  $('letter').innerHTML=`<h3>Un mensaje de tu yo de ${st.ret}</h3>
@@ -513,11 +550,11 @@ function render(reveal){
  $('rCompare').innerHTML=`Eso es como <b>${months} meses de tu sueldo actual</b>. Y por cada $100 que ahorras, <b>el SAT te devuelve $${Math.round(perPeso*100)}</b>.`;
  const a2=st.age+5;if(a2<=60){const w=sim(st.C,{...st,age:a2,ret:Math.max(65,a2+5)});const lost=res.fund-w.fund;
   $('wait').hidden=lost<=0;$('waitBig').textContent='−'+words(lost);$('waitTxt').textContent=`Es lo que dejarías de tener si empiezas a los ${a2} en lugar de hoy, ahorrando lo mismo.`}else $('wait').hidden=true;
- $('rSub').textContent=st.goal?`Para vivir con ${fmt(st.goal)} al mes necesitas ahorrar ${fmt(st.C)} al mes desde hoy.`:`Ahorrando ${fmt(st.C)} al mes desde los ${st.age} años. Cifras en pesos de hoy.`;
- $('rC').textContent=fmt(st.C);$('rInc').textContent=fmt(res.income);$('rTax').textContent=fmt(t.ref);
+ $('rSub').textContent=st.goal?`Para eso necesitas ahorrar ${fmt(st.C)} al mes desde hoy. Cifras en pesos de hoy.`:`Ahorrando ${fmt(st.C)} al mes desde los ${st.age}, con un fondo de ${words(res.fund)}. Cifras en pesos de hoy.`;
+ $('rC').textContent=fmt(st.C);$('rFund').textContent=words(res.fund);$('rFundL').textContent=`Tu fondo a los ${st.ret}`;$('rTax').textContent=fmt(t.ref);
  $('cV').textContent=fmt(st.C)+' al mes';
  $('nudge').textContent=12*st.C<t.cap?`Tip: con tu sueldo puedes deducir hasta ${fmt(t.cap/12)} al mes; ahí el SAT te regresaría ${fmt(t.refCap)} al año.`:`Ya aprovechas al máximo tu deducción. El SAT paga ${Math.round(t.ref/(12*st.C)*100)}% de tu ahorro.`;
- const w=[];if(res.T<10)w.push('Como te faltan menos de 10 años para los 65, no aplica el bono extra, pero sí el beneficio fiscal.');
+ const w=[];if(st.ret<65)w.push('El beneficio fiscal completo es para retiros a partir de los 65; antes aplica con condiciones que tu asesor te explica.');if(res.T<10)w.push('Como te faltan menos de 10 años para los 65, no aplica el bono extra, pero sí el beneficio fiscal.');
  $('warn').textContent=w.join(' ');
  $('howList').innerHTML=HOW.map(x=>`<li>${x}</li>`).join('')+(res.bp?`<li>En tu caso el bono sería de ${res.bp}% de tu primer año, unos ${fmt(res.bonus)}.</li>`:'');
  plot($('chart'),res.pts,{anim:reveal});
@@ -538,26 +575,46 @@ $('advName').textContent=adv.name;$('advRole').textContent=adv.role;$('advCed').
 $('avatar').innerHTML=adv.photo?`<img src="${encodeURI(adv.photo)}" alt="${adv.name}">`:ini;
 $('waBtnTxt').textContent=`Escribirle a ${first} por WhatsApp`;$('waBtn2').textContent=`Escribirle a ${first} por WhatsApp`;
 $('privacy').href=CONFIG.privacyUrl;
-if(lead.name){$('hello').textContent=`${lead.name}, ¿cuánto vas a tener a los 65?`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
+$('trustCed').textContent=`Cédula CNSF ${CONFIG.cedula}`;
+$('faqMoreBtn').addEventListener('click',()=>{$('faqMore').hidden=false;$('faqMoreBtn').hidden=true;track('faq_more')});
+{const v=CONFIG.ab[AB];$('hello').textContent=v.h;document.querySelector('[data-s="0"] .cta').textContent=v.cta}
+if(lead.name){const h=CONFIG.ab[AB].h;$('hello').textContent=`${lead.name}, ${h[0]==='¿'?'¿'+h[1].toLowerCase()+h.slice(2):h}`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
 
 const hi=()=>`Hola ${adv.name.split(' ')[0]}${lead.name?', soy '+lead.name:''}.`;
 const waText=()=>{const r=res;if(!r)return `${hi()} Tengo una pregunta sobre el plan de retiro.${lead.id?'\nRef: '+lead.id:''}`;return `${hi()} Hice mi cálculo de retiro:
 • Ahorro: ${fmt(st.C)} al mes desde los ${st.age} años
-• A los ${st.ret}: ${words(r.fund)} (pesos de hoy)
+• A los ${st.ret}: unos ${fmt(r.income)} al mes (fondo de ${words(r.fund)}, pesos de hoy)
 • Devolución del SAT: ${fmt(r.tax.ref)} al año
 Me gustaría que me expliquen cómo empezar.${lead.id?'\nRef: '+lead.id:''}`};
-function waUpdate(){const t=waText(),u=`https://wa.me/${adv.wa}?text=${encodeURIComponent(t)}`;
+function waUpdate(){updShare();const t=waText(),u=`https://wa.me/${adv.wa}?text=${encodeURIComponent(t)}`;
  $('waPreview').textContent=t;$('waBtn').href=u;$('waBtn2').href=u;$('waBtn3').href=u}
-const notify=()=>{const r=res,p={event:'retirement_plan_lead',channel:'WhatsApp',lead_id:lead.id,name:lead.name,company:lead.company,position:lead.position,advisor:adv.name,advisor_whatsapp:adv.wa,
+const pageUrl=location.origin+location.pathname;
+const shareText=()=>res?`Hice mi cálculo de retiro con Poly.la: ahorrando ${fmt(st.C)} al mes, a los ${st.ret} recibiría unos ${fmt(res.income)} al mes, y el SAT me regresaría ${fmt(res.tax.ref)} al año. Haz el tuyo en 1 minuto: ${pageUrl}`:`Haz tu cálculo de retiro en 1 minuto: ${pageUrl}`;
+const updShare=()=>{$('shareBtn').href='https://wa.me/?text='+encodeURIComponent(shareText())};
+$('shareBtn').addEventListener('click',e=>{track('share');if(navigator.share){e.preventDefault();navigator.share({title:'Poly.la',text:shareText()}).catch(()=>{})}});
+$('cbOpen').addEventListener('click',()=>{$('cbForm').hidden=false;$('cbOpen').hidden=true;$('cbTel').focus();track('callback_open')});
+$('cbTel').addEventListener('input',e=>{const d=e.target.value.replace(/\D/g,'').slice(0,10);e.target.value=d.replace(/(\d{2})(\d{0,4})(\d{0,4})/,(m,a,b,c)=>[a,b,c].filter(Boolean).join(' '))});
+$('cbForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('cbErr');err.textContent='';
+ const tel=$('cbTel').value.replace(/\D/g,'');
+ if(tel.length!==10){err.textContent='Escribe tu número de WhatsApp a 10 dígitos.';return}
+ if(!$('cbOk').checked){err.textContent='Marca la casilla para que podamos escribirte.';return}
+ const p={...leadPayload(),channel:'callback',whatsapp:'52'+tel};let ok=false;
+ if(CONFIG.webhookUrl){try{await fetch(CONFIG.webhookUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(p)});ok=true}catch(_){}}
+ $('cbForm').hidden=true;const d=$('cbDone');d.hidden=false;
+ d.innerHTML=ok?`<b>Listo.</b> ${adv.name.split(' ')[0]} te escribirá por WhatsApp al ${$('cbTel').value} con tu plan.`:`No pudimos registrar tu número en este momento. Escríbenos directo con el botón verde y te respondemos.`;
+ track(ok?'callback_submit':'callback_failed')});
+const leadPayload=()=>{const r=res;return{event:'retirement_plan_lead',ab:AB,channel:'WhatsApp',lead_id:lead.id,name:lead.name,company:lead.company,position:lead.position,advisor:adv.name,advisor_whatsapp:adv.wa,
  quiz:{age:st.age,salary_band_mid:st.sal,risk_profile:{7:'conservador',8.5:'balanceado',10:'dinámico'}[st.r],target_income:st.goal||null},
  simulation:{monthly_contribution:st.C,retirement_age:st.ret,fund_today_mxn:Math.round(r.fund),fund_nominal_mxn:Math.round(r.fundNom),
   monthly_income_today_mxn:Math.round(r.income),annual_tax_refund_mxn:Math.round(r.tax.ref),bonus_pct:r.bp,committed_term_years:r.T},
- page:location.href.split('?')[0],utm:Object.fromEntries([...q].filter(([k])=>k.startsWith('utm_'))),submitted_at:new Date().toISOString()};
+ page:location.href.split('?')[0],utm:Object.fromEntries([...q].filter(([k])=>k.startsWith('utm_'))),submitted_at:new Date().toISOString()}};
+const notify=()=>{const p=leadPayload();
  if(CONFIG.webhookUrl){try{navigator.sendBeacon(CONFIG.webhookUrl,new Blob([JSON.stringify(p)],{type:'text/plain'}))}catch(_){}}
  track('whatsapp_click')};
 $('waBtn').addEventListener('click',notify);$('waBtn3').addEventListener('click',()=>{if(res)notify();else track('whatsapp_click_faq')});
 waUpdate();$('waBtn2').addEventListener('click',notify);
 go('0');
+{const io=new IntersectionObserver(es=>{stickyState.vis=es[0].isIntersecting;updSticky()},{threshold:.15});io.observe($('leadBox'))}
 const pv=$('paintSvg'),fitP=()=>{const w=innerWidth,v=w<=600?[120,860]:w<=1200?[0,1200]:[-Math.min(400,(w-1200)/2.2),1200+2*Math.min(400,(w-1200)/2.2)];pv.setAttribute('viewBox',v[0]+' -10 '+v[1]+' 470');pv.parentNode.style.aspectRatio=v[1]+'/470'};fitP();addEventListener('resize',fitP);
 }
 </script>
