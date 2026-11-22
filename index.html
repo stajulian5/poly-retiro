@@ -43,6 +43,14 @@ main{max-width:720px;margin:0 auto;padding:16px 16px 48px}
 .opts{display:grid;gap:10px}.opts.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .opt{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:14px;padding:14px 16px;min-height:56px;font:600 17px Inter,sans-serif;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
 #qCh .opt{font-size:15px;justify-content:center;padding:10px 6px}
+.opt:has(small){flex-direction:column;align-items:flex-start;gap:2px}
+.custom{display:grid;gap:6px}
+.cin{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);border-radius:14px;padding:6px 6px 6px 16px;background:var(--bg)}
+.cin:focus-within{border-color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+.cin span{font:600 18px Inter,sans-serif;color:var(--mute)}
+.cin input{flex:1;min-width:0;border:0;background:none;font:600 18px Inter,sans-serif;color:var(--ink);min-height:44px;outline:none}
+.cin input:focus-visible{outline:none}
+.cta.mini{width:auto;min-height:44px;padding:10px 18px;font-size:15px}
 .opt small{font-weight:400;color:var(--mute);font-size:14px;display:block}
 .opt:hover{border-color:var(--acc)}.opt[aria-pressed=true]{border-color:var(--acc);background:var(--soft);box-shadow:inset 0 0 0 1px var(--acc)}
 .cta{display:flex;align-items:center;justify-content:center;background:var(--coral);color:#fff;border:0;border-radius:14px;padding:16px 22px;min-height:56px;font:700 17px Inter,sans-serif;cursor:pointer;text-decoration:none;width:100%}
@@ -156,6 +164,8 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
    <button class="opt" data-v="80000">$60,000 a $100,000</button>
    <button class="opt" data-v="140000">Más de $100,000</button>
   </div>
+  <div class="custom"><label for="cSal" class="hint">O escribe tu sueldo mensual</label>
+   <div class="cin"><span>$</span><input id="cSal" type="text" inputmode="numeric" placeholder="45,000" autocomplete="off"><button class="cta mini" id="cSalGo" disabled>Continuar</button></div></div>
   <button class="back" data-go="1">← Atrás</button>
  </section>
 
@@ -172,6 +182,8 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
    <button class="opt" data-v="10000">$10,000</button>
    <button class="opt" data-v="goal">No sé, ayúdame<small>Te decimos cuánto necesitas</small></button>
   </div>
+  <div class="custom"><label for="cSave" class="hint">O escribe tu cantidad</label>
+   <div class="cin"><span>$</span><input id="cSave" type="text" inputmode="numeric" placeholder="3,000" autocomplete="off"><button class="cta mini" id="cSaveGo" disabled>Continuar</button></div></div>
   <button class="back" data-go="2">← Atrás</button>
  </section>
 
@@ -448,6 +460,13 @@ function confetti(){if(RM)return;const c=$('confetti'),x=c.getContext('2d');c.wi
   if(++n<110)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)};f()}
 pick('qSal',v=>{st.sal=+v;setTimeout(()=>go('3'),180)});
 pick('qSave',v=>{if(v==='goal'){st.goal=0;setTimeout(()=>go('3b'),180)}else{st.goal=null;st.C=+v;setTimeout(()=>go('4'),180)}});
+const custom=(inp,btn,min,max,done)=>{const i=$(inp),b=$(btn);
+ const val=()=>+i.value.replace(/\D/g,'');
+ i.addEventListener('input',()=>{const v=val();i.value=v?v.toLocaleString('es-MX'):'';b.disabled=!(v>=min&&v<=max)});
+ const ok=()=>{const v=val();if(v>=min&&v<=max){i.blur();done(v)}};
+ b.addEventListener('click',ok);i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ok()}})};
+custom('cSal','cSalGo',3000,2000000,v=>{st.sal=v;for(const x of $('qSal').children)x.setAttribute('aria-pressed',false);go('3')});
+custom('cSave','cSaveGo',500,200000,v=>{st.goal=null;st.C=v;for(const x of $('qSave').children)x.setAttribute('aria-pressed',false);go('4')});
 pick('qGoal',v=>{st.goal=+v;setTimeout(()=>go('4'),180)});
 pick('qRisk',v=>{st.r=+v;setTimeout(()=>go('4b'),180)});
 $('back4').addEventListener('click',()=>go(st.goal!==null?'3b':'3'));
