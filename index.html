@@ -8,8 +8,8 @@
 <meta property="og:url" content="https://stajulian5.github.io/poly-retiro/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Poly.la">
-<meta property="og:title" content="Hazle un favor a tu yo de 65.">
-<meta property="og:description" content="Descubre en 1 minuto cuánto tendrás a los 65 y cuánto te devuelve el SAT. Tu fortuna no es suerte, es plan.">
+<meta property="og:title" content="¿Cuánto vas a tener a los 65?">
+<meta property="og:description" content="Descubre en 1 minuto cuánto tendrás a los 65 y cuánto te devuelve el SAT. Hazle un favor a tu yo de 65.">
 <meta property="og:image" content="https://stajulian5.github.io/poly-retiro/og.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -137,14 +137,14 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 </style>
 </head>
 <body>
-<div class="top"><span class="logo"><span class="mark" aria-hidden="true">🦜</span><span><span id="brand">Poly.la</span><small class="tag">Tu fortuna no es suerte, es plan.</small></span></span><div class="prog" aria-hidden="true"><i id="bar"></i></div></div>
+<div class="top"><span class="logo"><span class="mark" aria-hidden="true">🦜</span><span><span id="brand">Poly.la</span><small class="tag">Hazle un favor a tu yo de 65.</small></span></span><div class="prog" aria-hidden="true"><i id="bar"></i></div></div>
 <main>
 <div class="card">
 
  <!-- 0 · Teaser -->
  <section class="step on" data-s="0">
-  <h1 id="hello">Hazle un favor a tu yo de 65.</h1>
-  <p class="hint" id="helloSub">4 preguntas, 1 minuto. Te mostramos cuánto tendrás a los 65 y cuánto te regresa el SAT cada año.</p>
+  <h1 id="hello">¿Cuánto vas a tener a los 65?</h1>
+  <p class="hint" id="helloSub">4 preguntas, 1 minuto. Te mostramos tu número y cuánto te regresa el SAT cada año.</p>
   <div class="fig"><svg id="teaser" role="img" aria-label="Ejemplo de cómo crece un ahorro para el retiro"></svg></div>
   <button class="cta" data-go="1">Hacerle el favor</button>
   <p class="hint" style="text-align:center;margin-top:-8px">1 minuto · Sin datos bancarios · Sin compromiso</p>
@@ -337,7 +337,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
  <g transform="translate(204 300) scale(-1 1)"><text x="0" y="0" font-size="24" text-anchor="middle" style="font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">🦜</text></g>
 </svg>
 </div>
-<p class="fine"><b style="color:#fff"><span id="fineBrand">Poly.la</span> · Tu fortuna no es suerte, es plan.</b><br>Poly.la, agente de seguros autorizado por la CNSF, cédula <span id="fineCed"></span>. Simulación ilustrativa; no es una oferta ni garantiza resultados. Supone aportaciones que suben con la inflación (4% anual), rendimientos constantes según tu perfil (7%, 8.5% o 10% anual, no garantizados), descuenta los cargos del producto con IVA y convierte el ahorro en un ingreso mensual hasta los 90 años con rendimiento real de 2%. Cifras en pesos de hoy. Producto: Plan Personal de Retiro OptiMaxx Plus de Allianz México, S.A., Compañía de Seguros; aplican sus condiciones generales. Beneficio fiscal según el artículo 151, fracción V de la Ley del ISR y la tarifa anual 2026; puede cambiar.</p>
+<p class="fine"><b style="color:#fff"><span id="fineBrand">Poly.la</span> · Hazle un favor a tu yo de 65.</b><br>Poly.la, agente de seguros autorizado por la CNSF, cédula <span id="fineCed"></span>. Simulación ilustrativa; no es una oferta ni garantiza resultados. Supone aportaciones que suben con la inflación (4% anual), rendimientos constantes según tu perfil (7%, 8.5% o 10% anual, no garantizados), descuenta los cargos del producto con IVA y convierte el ahorro en un ingreso mensual hasta los 90 años con rendimiento real de 2%. Cifras en pesos de hoy. Producto: Plan Personal de Retiro OptiMaxx Plus de Allianz México, S.A., Compañía de Seguros; aplican sus condiciones generales. Beneficio fiscal según el artículo 151, fracción V de la Ley del ISR y la tarifa anual 2026; puede cambiar.</p>
 
 <script>
 {
@@ -535,7 +535,7 @@ $('advName').textContent=adv.name;$('advRole').textContent=adv.role;$('advCed').
 $('avatar').innerHTML=adv.photo?`<img src="${encodeURI(adv.photo)}" alt="${adv.name}">`:ini;
 $('waBtnTxt').textContent=`Escribirle a ${first} por WhatsApp`;$('waBtn2').textContent=`Escribirle a ${first} por WhatsApp`;
 $('privacy').href=CONFIG.privacyUrl;
-if(lead.name){$('hello').textContent=`${lead.name}, hazle un favor a tu yo de 65.`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
+if(lead.name){$('hello').textContent=`${lead.name}, ¿cuánto vas a tener a los 65?`;$('fTitle').textContent=`${lead.name}, ¿lo armamos juntos?`}
 
 const hi=()=>`Hola ${adv.name.split(' ')[0]}${lead.name?', soy '+lead.name:''}.`;
 const waText=()=>{const r=res;if(!r)return `${hi()} Tengo una pregunta sobre el plan de retiro.${lead.id?'\nRef: '+lead.id:''}`;return `${hi()} Hice mi cálculo de retiro:
