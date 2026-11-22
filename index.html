@@ -139,7 +139,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 .trust i{font-style:normal}
 .retpick{display:grid;gap:8px;justify-items:center}.opts.three{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
 .opts.three .opt{justify-content:center;font-size:18px}
-.legend span{white-space:nowrap}
+.legend span{white-space:nowrap}.legend .dash{width:18px;height:0;border-top:2.5px dashed var(--coral);border-radius:0;vertical-align:3px}
 .linkbtn{background:none;border:0;color:var(--acc);font:600 15px Inter,sans-serif;cursor:pointer;padding:8px 0;min-height:44px;justify-self:center;text-decoration:underline;text-underline-offset:3px}
 .cb{display:grid;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:14px}
 .cb .lab{font-weight:600;font-size:15px}
@@ -288,7 +288,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
   <div class="explore">
   <h3 class="exh">Explora tu plan</h3>
   <div class="grp">
-  <div class="legend"><span><i style="background:var(--wall)"></i>Lo que creció</span><span><i style="background:var(--paid)"></i>Lo que pusiste</span></div>
+  <div class="legend"><span><i style="background:var(--wall)"></i>Lo que creció</span><span><i style="background:var(--paid)"></i>Lo que pusiste</span><span><i class="dash"></i>Fondo si reinviertes la devolución del SAT</span></div>
   <div class="fig" id="fig"><svg id="chart" role="img" aria-label="Cómo crece tu ahorro por edad"></svg><div class="tip" id="tip"></div></div>
   </div>
   <div class="slider">
@@ -444,7 +444,7 @@ const tax=C=>{const A=st.sal*12,cap=Math.min(.1*A,UMA5),ded=Math.min(12*C,cap);r
 function plot(s,p,opt={}){
  const W=s.clientWidth,H=s.clientHeight;if(!W)return;
  const narrow=W<480,L=opt.hide?8:(narrow?46:58),Rr=opt.hide?12:14,Tp=16,B=26;
- const maxY=Math.max(...p.map(d=>Math.max(d.fund,d.paid)),1)*1.1,x0=p[0].age,x1=p[p.length-1].age;
+ const ex=opt.extra||null,maxY=Math.max(...p.map(d=>Math.max(d.fund,d.paid)),...(ex?ex.map(d=>d.fund):[]),1)*1.1,x0=p[0].age,x1=p[p.length-1].age;
  const X=a=>L+(a-x0)/(x1-x0)*(W-L-Rr),Y=v=>Tp+(1-Math.max(0,v)/maxY)*(H-Tp-B);
  const path=k=>p.map((d,i)=>(i?'L':'M')+X(d.age).toFixed(1)+' '+Y(d[k]).toFixed(1)).join('');
  const close=`L${X(x1)} ${Y(0)}L${X(x0)} ${Y(0)}Z`,end=p[p.length-1];
@@ -456,6 +456,8 @@ function plot(s,p,opt={}){
  <defs><linearGradient id="gw${opt.hide?1:2}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7b7d2"/><stop offset="1" stop-color="#f7b7d2" stop-opacity=".45"/></linearGradient></defs><path d="${path('fund')}${close}" fill="url(#gw${opt.hide?1:2})"/><path class="ln" d="${path('fund')}" fill="none" stroke="var(--coral)" stroke-width="3" stroke-linejoin="round"/>
  <path d="${path('paid')}${close}" fill="var(--paid)"/>
  <circle cx="${X(end.age)}" cy="${Y(end.fund)}" r="7" fill="var(--coral)" stroke="var(--card)" stroke-width="3"/>`;
+ if(ex){const pe=ex.map((d,i)=>(i?'L':'M')+X(d.age).toFixed(1)+' '+Y(d.fund).toFixed(1)).join(''),ee=ex[ex.length-1];
+  h+=`<path class="exl" d="${pe}" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-dasharray="7 6" stroke-linejoin="round"/><circle cx="${X(ee.age)}" cy="${Y(ee.fund)}" r="6" fill="var(--card)" stroke="var(--coral)" stroke-width="2.5"/>`}
  if(opt.hide)h+=`<g transform="translate(${X(end.age)-104},${Math.max(2,Y(end.fund)-6)})"><rect width="88" height="42" rx="10" fill="var(--coral)"/><text x="44" y="18" text-anchor="middle" font-size="12" fill="#ffe3f1">A los 65</text><text x="44" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Fraunces,serif">$ $ $ ?</text></g>
   <text x="${L+4}" y="${Tp+4}" font-size="13" fill="var(--mute)">Ejemplo ilustrativo</text>`;
  else h+=`<line id="hx" y1="${Tp}" y2="${H-B}" stroke="var(--ink)" stroke-dasharray="3 3" opacity="0"/><rect id="hit" x="${L}" y="0" width="${W-L-Rr}" height="${H}" fill="transparent"/>`;
@@ -467,14 +469,14 @@ function plot(s,p,opt={}){
  const mv=e=>{const r=s.getBoundingClientRect(),cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left,
   d=p[Math.max(0,Math.min(p.length-1,Math.round((cx-L)/(W-L-Rr)*(p.length-1))))];
   hx.setAttribute('x1',X(d.age));hx.setAttribute('x2',X(d.age));hx.setAttribute('opacity',.5);
-  tip.innerHTML=`<b>A los ${d.age} años</b><br>Tendrías ${fmt(d.fund)}<br>Tú pusiste ${fmt(d.paid)}`;tip.style.opacity=1;
+  const di=p.indexOf(d);tip.innerHTML=`<b>A los ${d.age} años</b><br>Tendrías ${fmt(d.fund)}${ex&&ex[di]?`<br>Reinvirtiendo SAT: ${fmt(ex[di].fund)}`:''}<br>Tú pusiste ${fmt(d.paid)}`;tip.style.opacity=1;
   tip.style.left=(X(d.age)>W*.55?X(d.age)-tip.offsetWidth-10:X(d.age)+10)+'px';tip.style.top=Math.max(0,Y(d.fund)-60)+'px'};
  hit.addEventListener('mousemove',mv);hit.addEventListener('touchmove',mv,{passive:true});
  hit.addEventListener('mouseleave',()=>{tip.style.opacity=0;hx.setAttribute('opacity',0)});
 }
 const teaserPts=[...Array(36)].map((_,y)=>({age:30+y,paid:y,fund:(1.07**y-1)/.07}));
 let res=null;
-const drawAll=()=>{plot($('teaser'),teaserPts,{hide:true});if(res)plot($('chart'),res.pts)};
+const drawAll=()=>{plot($('teaser'),teaserPts,{hide:true});if(res)plot($('chart'),res.pts,{extra:res.reinv})};
 const ro=new ResizeObserver(drawAll);ro.observe(document.querySelector('main'));
 
 /* embudo */
@@ -557,7 +559,8 @@ function render(reveal){
  const w=[];if(st.ret<65)w.push('El beneficio fiscal completo es para retiros a partir de los 65; antes aplica con condiciones que tu asesor te explica.');if(res.T<10)w.push('Como te faltan menos de 10 años para los 65, no aplica el bono extra, pero sí el beneficio fiscal.');
  $('warn').textContent=w.join(' ');
  $('howList').innerHTML=HOW.map(x=>`<li>${x}</li>`).join('')+(res.bp?`<li>En tu caso el bono sería de ${res.bp}% de tu primer año, unos ${fmt(res.bonus)}.</li>`:'');
- plot($('chart'),res.pts,{anim:reveal});
+ res.reinv=sim(st.C+t.ref/12).pts;
+ plot($('chart'),res.pts,{anim:reveal,extra:res.reinv});
  waUpdate();
 }
 $('cR').addEventListener('input',e=>{st.C=+e.target.value;st.goal=null;render()});
