@@ -139,7 +139,8 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 .trust i{font-style:normal}
 .retpick{display:grid;gap:8px;justify-items:center}.opts.three{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
 .opts.three .opt{justify-content:center;font-size:18px}
-.legend span{white-space:nowrap}.legend .dash{width:18px;height:0;border-top:2.5px dashed var(--coral);border-radius:0;vertical-align:3px}
+.legend span{white-space:nowrap}.tlegend{justify-content:center;margin-top:-6px;font-size:13px;gap:6px 14px}
+.legend .dash{width:18px;height:0;border-top:2.5px dashed var(--coral);border-radius:0;vertical-align:3px}
 .linkbtn{background:none;border:0;color:var(--acc);font:600 15px Inter,sans-serif;cursor:pointer;padding:8px 0;min-height:44px;justify-self:center;text-decoration:underline;text-underline-offset:3px}
 .cb{display:grid;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:14px}
 .cb .lab{font-weight:600;font-size:15px}
@@ -163,6 +164,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
   <h1 id="hello">¿Cuánto vas a tener a los 65?</h1>
   <p class="hint" id="helloSub">4 preguntas, 1 minuto. Te mostramos tu número y cuánto te regresa el SAT cada año.</p>
   <div class="fig"><svg id="teaser" role="img" aria-label="Ejemplo de cómo crece un ahorro para el retiro"></svg></div>
+  <div class="legend tlegend"><span><i style="background:var(--wall)"></i>Tu fondo</span><span><i style="background:var(--paid)"></i>Lo que pusiste</span><span><i class="dash"></i>Reinvirtiendo tu devolución del SAT</span></div>
   <button class="cta" data-go="1">Descubrir mi número</button>
   <p class="minitrust"><span>1 minuto</span><span>Sin datos bancarios</span><span>Sin compromiso</span></p>
   <div class="trust"><span><b id="backer">Allianz México</b>Plan respaldado por</span><span><b>Deducible</b>ante el SAT</span><span><b>Agente autorizado</b><i id="trustCed">por la CNSF</i></span></div>
@@ -458,7 +460,7 @@ function plot(s,p,opt={}){
  <circle cx="${X(end.age)}" cy="${Y(end.fund)}" r="7" fill="var(--coral)" stroke="var(--card)" stroke-width="3"/>`;
  if(ex){const pe=ex.map((d,i)=>(i?'L':'M')+X(d.age).toFixed(1)+' '+Y(d.fund).toFixed(1)).join(''),ee=ex[ex.length-1];
   h+=`<path class="exl" d="${pe}" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-dasharray="7 6" stroke-linejoin="round"/><circle cx="${X(ee.age)}" cy="${Y(ee.fund)}" r="6" fill="var(--card)" stroke="var(--coral)" stroke-width="2.5"/>`}
- if(opt.hide)h+=`<g transform="translate(${X(end.age)-104},${Math.max(2,Y(end.fund)-6)})"><rect width="88" height="42" rx="10" fill="var(--coral)"/><text x="44" y="18" text-anchor="middle" font-size="12" fill="#ffe3f1">A los 65</text><text x="44" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Fraunces,serif">$ $ $ ?</text></g>
+ if(opt.hide)h+=`<g transform="translate(${X(end.age)-(ex?150:104)},${Math.max(2,(ex?Y(ex[ex.length-1].fund):Y(end.fund))-6)})"><rect width="88" height="42" rx="10" fill="var(--coral)"/><text x="44" y="18" text-anchor="middle" font-size="12" fill="#ffe3f1">A los 65</text><text x="44" y="35" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Fraunces,serif">$ $ $ ?</text></g>
   <text x="${L+4}" y="${Tp+4}" font-size="13" fill="var(--mute)">Ejemplo ilustrativo</text>`;
  else h+=`<line id="hx" y1="${Tp}" y2="${H-B}" stroke="var(--ink)" stroke-dasharray="3 3" opacity="0"/><rect id="hit" x="${L}" y="0" width="${W-L-Rr}" height="${H}" fill="transparent"/>`;
  s.innerHTML=h;
@@ -474,9 +476,9 @@ function plot(s,p,opt={}){
  hit.addEventListener('mousemove',mv);hit.addEventListener('touchmove',mv,{passive:true});
  hit.addEventListener('mouseleave',()=>{tip.style.opacity=0;hx.setAttribute('opacity',0)});
 }
-const teaserPts=[...Array(36)].map((_,y)=>({age:30+y,paid:y,fund:(1.07**y-1)/.07}));
+const teaserPts=[...Array(36)].map((_,y)=>({age:30+y,paid:y,fund:(1.07**y-1)/.07})),teaserEx=teaserPts.map(d=>({age:d.age,fund:d.fund*1.25}));
 let res=null;
-const drawAll=()=>{plot($('teaser'),teaserPts,{hide:true});if(res)plot($('chart'),res.pts,{extra:res.reinv})};
+const drawAll=()=>{plot($('teaser'),teaserPts,{hide:true,extra:teaserEx});if(res)plot($('chart'),res.pts,{extra:res.reinv})};
 const ro=new ResizeObserver(drawAll);ro.observe(document.querySelector('main'));
 
 /* embudo */
