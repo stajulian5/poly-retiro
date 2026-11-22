@@ -95,6 +95,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 @media(prefers-reduced-motion:reduce){.track{animation:none;flex-wrap:wrap;justify-content:center;width:auto;padding:0 16px}}
 .logo-ph{display:flex;align-items:center;gap:10px;color:#d6e8e1;opacity:.85;white-space:nowrap;font:600 17px Inter,sans-serif;letter-spacing:.01em}
 .logo-ph svg{width:30px;height:30px;flex:none}
+.logo-svg{display:block;color:#e7f1ec;opacity:.9}.logo-svg svg{height:34px;width:auto;display:block}.demo-note{color:#a9c9bd;font-size:13px}
 .track img{height:34px;width:auto;filter:brightness(0) invert(1);opacity:.85}
 .trust{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--line);padding-top:16px}
 .trust span{font-size:12px;color:var(--mute);text-align:center;display:flex;flex-direction:column-reverse;gap:2px}.trust b{font:700 14px "Inter Tight",sans-serif;color:var(--ink)}
@@ -324,6 +325,17 @@ const CONFIG={
  brand:'Poly.la',
  // EMPRESAS CLIENTE (prueba social): REEMPLAZAR por empresas reales que ya trabajan con Poly.la y que autorizaron usar su nombre.
  // logo opcional: URL de su logo (se muestra en gris). Si la lista queda vacía, la sección se oculta.
+ demoLogos:false, // true = mostrar logos inventados de ejemplo (solo para maqueta privada; NUNCA en el sitio público)
+ demoPartners:[
+  {name:'Nopalia',svg:'<svg viewBox="0 0 150 34"><path d="M10 30V14a6 6 0 0 1 12 0v4a5 5 0 0 1 10 0v12" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><text x="42" y="25" font-family="Fraunces,serif" font-weight="700" font-size="21" fill="currentColor">Nopalia</text></svg>'},
+  {name:'Grupo Maizal',svg:'<svg viewBox="0 0 175 34"><g fill="currentColor"><ellipse cx="11" cy="17" rx="5" ry="12"/><ellipse cx="22" cy="17" rx="5" ry="12" opacity=".7"/></g><text x="34" y="23" font-family="Inter,sans-serif" font-weight="800" font-size="16" letter-spacing="1.5" fill="currentColor">GRUPO MAIZAL</text></svg>'},
+  {name:'Ferrovía Nortesur',svg:'<svg viewBox="0 0 205 34"><path d="M4 26h30M8 26l8-18h6l8 18" fill="none" stroke="currentColor" stroke-width="3"/><text x="42" y="23" font-family="Inter Tight,Inter,sans-serif" font-weight="700" font-size="17" fill="currentColor">Ferrovía Nortesur</text></svg>'},
+  {name:'Bruma Foods',svg:'<svg viewBox="0 0 170 34"><path d="M4 22c6-8 12-8 18 0s12 8 18 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><text x="48" y="24" font-family="Fraunces,serif" font-style="italic" font-weight="600" font-size="20" fill="currentColor">bruma</text><text x="118" y="24" font-family="Inter,sans-serif" font-weight="500" font-size="12" fill="currentColor">FOODS</text></svg>'},
+  {name:'Cacto Labs',svg:'<svg viewBox="0 0 150 34"><rect x="4" y="5" width="24" height="24" rx="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 23V11M11 16v-3M21 18v-4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><text x="38" y="24" font-family="Inter,sans-serif" font-weight="700" font-size="18" fill="currentColor">cacto<tspan font-weight="400">labs</tspan></text></svg>'},
+  {name:'Órbita Andina',svg:'<svg viewBox="0 0 180 34"><circle cx="16" cy="17" r="6" fill="currentColor"/><ellipse cx="16" cy="17" rx="13" ry="6" fill="none" stroke="currentColor" stroke-width="2.4" transform="rotate(-25 16 17)"/><text x="38" y="23" font-family="Inter Tight,Inter,sans-serif" font-weight="600" font-size="17" letter-spacing=".5" fill="currentColor">Órbita Andina</text></svg>'},
+  {name:'Tlacuache Logística',svg:'<svg viewBox="0 0 215 34"><path d="M4 24h12l6-12h12" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/><text x="42" y="23" font-family="Inter,sans-serif" font-weight="800" font-size="15" fill="currentColor">TLACUACHE</text><text x="142" y="23" font-family="Inter,sans-serif" font-weight="400" font-size="15" fill="currentColor">logística</text></svg>'},
+  {name:'Pétalo & Co.',svg:'<svg viewBox="0 0 150 34"><g fill="currentColor"><circle cx="16" cy="10" r="5"/><circle cx="23" cy="17" r="5"/><circle cx="16" cy="24" r="5"/><circle cx="9" cy="17" r="5"/></g><text x="36" y="24" font-family="Fraunces,serif" font-weight="600" font-size="19" fill="currentColor">Pétalo &amp; Co.</text></svg>'}
+ ],
  partners:[{name:'Logo cliente'},{name:'Logo cliente'},{name:'Logo cliente'},{name:'Logo cliente'},{name:'Logo cliente'},{name:'Logo cliente'}],
  cedula:'123456',          // DUMMY: reemplazar por la cédula real de la CNSF
  advisor:{name:'Mariana López',role:'Asesora de retiro · Poly.la',photo:''}, // asesor por defecto (ejemplo); photo = URL de su foto
@@ -485,8 +497,9 @@ $('cR').addEventListener('change',()=>track('slider_change',{monthly:st.C}));
 /* personalización: ?id=123&n=Ana&e=Empresa&p=Puesto */
 $('brand').textContent=CONFIG.brand;
 {const marks=['<circle cx="15" cy="15" r="12"/>','<rect x="4" y="4" width="22" height="22" rx="5"/>','<path d="M15 3 L27 26 H3Z"/>','<path d="M4 15 a11 11 0 0 1 22 0 v11 h-22Z"/>','<path d="M15 3 L26 15 L15 27 L4 15Z"/>','<path d="M4 8h22v5H4zM4 17h22v5H4z"/>'];
- const one=(c,i)=>c.logo?`<img src="${encodeURI(c.logo)}" alt="${c.name.replace(/"/g,'')}">`:`<span class="logo-ph"><svg viewBox="0 0 30 30" fill="currentColor" aria-hidden="true">${marks[i%marks.length]}</svg>${c.name.replace(/</g,'&lt;')}</span>`;
- if(CONFIG.partners.length){const row=CONFIG.partners.map(one).join('');$('logos').innerHTML=row+row.replace(/<img /g,'<img aria-hidden="true" ').replace(/class="logo-ph"/g,'class="logo-ph" aria-hidden="true"')}else $('clients').hidden=true}$('fineBrand').textContent=CONFIG.brand;$('fineCed').textContent=CONFIG.cedula;
+ const one=(c,i)=>c.svg?`<span class="logo-svg" aria-label="${c.name}">${c.svg}</span>`:c.logo?`<img src="${encodeURI(c.logo)}" alt="${c.name.replace(/"/g,'')}">`:`<span class="logo-ph"><svg viewBox="0 0 30 30" fill="currentColor" aria-hidden="true">${marks[i%marks.length]}</svg>${c.name.replace(/</g,'&lt;')}</span>`;
+ const list=CONFIG.demoLogos?CONFIG.demoPartners:CONFIG.partners;if(CONFIG.demoLogos)$('clients').insertAdjacentHTML('beforeend','<p class="demo-note">Logos de ejemplo · empresas ficticias</p>');
+ if(list.length){const row=list.map(one).join('');$('logos').innerHTML=row+row.replace(/<img /g,'<img aria-hidden="true" ').replace(/class="logo-ph"/g,'class="logo-ph" aria-hidden="true"')}else $('clients').hidden=true}$('fineBrand').textContent=CONFIG.brand;$('fineCed').textContent=CONFIG.cedula;
 const first=adv.name.split(' ')[0],ini=adv.name.split(' ').map(w=>w[0]).slice(0,2).join('');
 $('advName').textContent=adv.name;$('advRole').textContent=adv.role;$('advCed').textContent=`Agente autorizado · Cédula CNSF ${CONFIG.cedula}`;
 $('avatar').innerHTML=adv.photo?`<img src="${encodeURI(adv.photo)}" alt="${adv.name}">`:ini;
