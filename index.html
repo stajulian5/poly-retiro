@@ -106,6 +106,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 .logo-ph svg{width:30px;height:30px;flex:none}
 .logo-svg{display:block;color:#e7f1ec;opacity:.9}.logo-svg svg{height:34px;width:auto;display:block}.demo-note{color:#a9c9bd;font-size:13px}
 .track img{height:34px;width:auto;filter:brightness(0) invert(1);opacity:.85}
+.backer{height:22px;width:auto;display:block;margin:2px auto 0}
 .trust{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--line);padding-top:16px}
 .trust span{font-size:12px;color:var(--mute);text-align:center;display:flex;flex-direction:column-reverse;gap:2px}.trust b{font:700 14px "Inter Tight",sans-serif;color:var(--ink)}
 .adv{display:flex;gap:14px;align-items:center;background:var(--soft);border-radius:4px;padding:14px 16px}
@@ -147,7 +148,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
   <div class="fig"><svg id="teaser" role="img" aria-label="Ejemplo de cómo crece un ahorro para el retiro"></svg></div>
   <button class="cta" data-go="1">Hacerle el favor</button>
   <p class="hint" style="text-align:center;margin-top:-8px">1 minuto · Sin datos bancarios · Sin compromiso</p>
-  <div class="trust"><span><b>Allianz México</b>Plan respaldado por</span><span><b>Deducible</b>ante el SAT</span><span><b>Agente autorizado</b>por la CNSF</span></div>
+  <div class="trust"><span><b id="backer">Allianz México</b>Plan respaldado por</span><span><b>Deducible</b>ante el SAT</span><span><b>Agente autorizado</b>por la CNSF</span></div>
  </section>
 
  <!-- 1 · Edad -->
@@ -343,6 +344,7 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 /* ====== CONFIGURACIÓN: edita esto antes de publicar ====== */
 const CONFIG={
  brand:'Poly.la',
+ backerLogo:'', // logo OFICIAL de Allianz México (archivo del portal de agentes), p. ej. 'allianz-mexico.svg' en la misma carpeta. Vacío = texto.
  // EMPRESAS CLIENTE (prueba social): REEMPLAZAR por empresas reales que ya trabajan con Poly.la y que autorizaron usar su nombre.
  // logo opcional: URL de su logo (se muestra en gris). Si la lista queda vacía, la sección se oculta.
  demoLogos:false, // true = mostrar logos inventados de ejemplo (solo para maqueta privada; NUNCA en el sitio público)
@@ -523,6 +525,7 @@ $('cR').addEventListener('change',()=>track('slider_change',{monthly:st.C}));
 
 /* personalización: ?id=123&n=Ana&e=Empresa&p=Puesto */
 $('brand').textContent=CONFIG.brand;
+if(CONFIG.backerLogo)$('backer').innerHTML=`<img src="${encodeURI(CONFIG.backerLogo)}" alt="Allianz México" class="backer">`;
 {const marks=['<circle cx="15" cy="15" r="12"/>','<rect x="4" y="4" width="22" height="22" rx="5"/>','<path d="M15 3 L27 26 H3Z"/>','<path d="M4 15 a11 11 0 0 1 22 0 v11 h-22Z"/>','<path d="M15 3 L26 15 L15 27 L4 15Z"/>','<path d="M4 8h22v5H4zM4 17h22v5H4z"/>'];
  const one=(c,i)=>c.svg?`<span class="logo-svg" aria-label="${c.name}">${c.svg}</span>`:c.logo?`<img src="${encodeURI(c.logo)}" alt="${c.name.replace(/"/g,'')}">`:`<span class="logo-ph"><svg viewBox="0 0 30 30" fill="currentColor" aria-hidden="true">${marks[i%marks.length]}</svg>${c.name.replace(/</g,'&lt;')}</span>`;
  const list=CONFIG.demoLogos?CONFIG.demoPartners:CONFIG.partners;if(CONFIG.demoLogos)$('clients').insertAdjacentHTML('beforeend','<p class="demo-note">Logos de ejemplo · empresas ficticias</p>');
