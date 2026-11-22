@@ -115,6 +115,14 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
 .faqwrap{max-width:720px;margin:0 auto;padding:0 16px 40px}
 .faq{gap:0}.faq h2{margin-bottom:12px}
 .faq details{border-top:1px solid var(--line);padding:0}
+.more{border:1.5px solid var(--line);border-radius:14px;padding:0 18px;margin-top:0}
+.more summary{list-style:none;position:relative;padding:14px 40px 14px 0;font-size:17px}
+.more summary::-webkit-details-marker{display:none}
+.more summary small{display:block;font-weight:500;font-size:14px;color:var(--acc);margin-top:2px}
+.more[open] summary small{display:none}
+.more summary::after{content:"+";position:absolute;right:0;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--soft);color:var(--acc);display:grid;place-items:center;font:500 22px/1 Inter,sans-serif;transition:transform .2s}
+.more[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.more ul{padding:0 0 14px 20px}
 .faq summary{font:600 17px/1.35 Inter,sans-serif;padding:16px 36px 16px 0;list-style:none;position:relative}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);font:500 26px Inter,sans-serif;color:var(--acc);transition:transform .2s}
@@ -252,8 +260,8 @@ details ul{padding-left:20px;color:var(--mute);font-size:15px;margin:4px 0}detai
    <span id="waitTxt"></span>
   </div>
   <div class="warn" id="warn"></div>
-  <details>
-   <summary>¿Cómo funciona y qué debo saber?</summary>
+  <details class="more">
+   <summary><span>¿Cómo funciona y qué debo saber?<small>Ver detalles</small></span></summary>
    <ul id="howList"></ul>
   </details>
 
@@ -452,7 +460,7 @@ const ageMsg=()=>{const y=Math.max(65,st.age+5)-st.age;$('ageMsg').textContent=y
 $('age').addEventListener('input',e=>{st.age=+e.target.value;$('ageV').textContent=st.age;ageMsg()});ageMsg();
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function loading(){const li=[...$('checks').children];li.forEach(x=>x.classList.remove('ok','act'));
- const d=RM?300:1150;li.forEach((x,i)=>{setTimeout(()=>x.classList.add('act'),d*i+150);setTimeout(()=>{x.classList.remove('act');x.classList.add('ok')},d*(i+1))});setTimeout(()=>go('5'),d*li.length+650)}
+ const d=RM?300:1450;li.forEach((x,i)=>{setTimeout(()=>x.classList.add('act'),d*i+150);setTimeout(()=>{x.classList.remove('act');x.classList.add('ok')},d*(i+1))});setTimeout(()=>go('5'),d*li.length+650)}
 function countUp(el,to,fn){if(RM){el.textContent=fn(to);return}const t0=performance.now(),D=1300;
  const f=t=>{const k=Math.min(1,(t-t0)/D),e=1-(1-k)**3;el.textContent=fn(to*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 function confetti(){if(RM)return;const c=$('confetti'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
